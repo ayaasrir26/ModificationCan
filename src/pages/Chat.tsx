@@ -15,7 +15,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 
 interface Comment {
     id: string;
@@ -125,11 +125,11 @@ const Chat = () => {
             setImage(null);
             setEditingId(null);
             setIsFormOpen(false);
-            toast.success(editingId ? "Post modifié avec succès !" : "Post publié avec succès !");
+            toast.success(editingId ? "Post edited successfully!" : "Post published successfully!");
         },
         onError: (err: any) => {
             console.error("Share error:", err);
-            toast.error("Erreur : " + (err.message || "Assurez-vous d'avoir exécuté le script SQL."));
+            toast.error("Error: " + (err.message || "Make sure you have run the SQL script."));
         },
     });
 
@@ -140,9 +140,9 @@ const Chat = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["chat_posts"] });
-            toast.success("Post supprimé");
+            toast.success("Post deleted");
         },
-        onError: (err: any) => toast.error("Erreur : " + err.message),
+        onError: (err: any) => toast.error("Error: " + err.message),
     });
 
     const likeMutation = useMutation({
@@ -171,14 +171,14 @@ const Chat = () => {
             if (error) throw error;
         },
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat_posts"] }),
-        onError: (err: any) => toast.error("Erreur : " + err.message),
+        onError: (err: any) => toast.error("Error: " + err.message),
     });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) {
-                toast.error("Image trop grande (max 2MB)");
+                toast.error("Image too large (max 2MB)");
                 return;
             }
             const reader = new FileReader();
@@ -250,13 +250,13 @@ const Chat = () => {
                                                 </Avatar>
                                                 <div className="flex-1 space-y-3">
                                                     <Input
-                                                        placeholder="Titre de votre sujet..."
+                                                        placeholder="Topic title..."
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                         className="h-11 border-slate-200 focus:border-royal-emerald focus:ring-1 focus:ring-royal-emerald rounded-lg font-bold text-slate-900"
                                                     />
                                                     <Textarea
-                                                        placeholder="Développez votre argumentation..."
+                                                        placeholder="Develop your argument..."
                                                         value={content}
                                                         onChange={(e) => setContent(e.target.value)}
                                                         className="min-h-[120px] border-slate-200 focus:border-royal-emerald focus:ring-1 focus:ring-royal-emerald rounded-lg font-medium text-slate-600 resize-none"
@@ -278,7 +278,7 @@ const Chat = () => {
                                                         className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-500 cursor-pointer transition-all font-bold text-xs"
                                                     >
                                                         <ImageIcon className="w-4 h-4" />
-                                                        Médias
+                                                        Media
                                                     </label>
                                                 </div>
 
@@ -286,8 +286,8 @@ const Chat = () => {
                                                     disabled={shareMutation.isPending || !title.trim() || !content.trim()}
                                                     className="h-10 px-6 bg-royal-emerald hover:bg-royal-emerald/90 text-white rounded-lg font-bold shadow-sm transition-all"
                                                 >
-                                                    {shareMutation.isPending ? "Publication..." : (editingId ? "Enregistrer" : "Publier le sujet")}
-                                                </Button>
+                                                    {shareMutation.isPending ? "Publishing..." : (editingId ? "Save" : "Publish topic")}
+                                                </Button> 
                                             </div>
 
                                             {image && (
@@ -318,8 +318,8 @@ const Chat = () => {
                                 ) : posts?.length === 0 ? (
                                     <div className="text-center py-20 bg-white border border-slate-200 rounded-xl">
                                         <MessageSquare className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                                        <h3 className="text-lg font-bold text-slate-800">Aucun sujet actif</h3>
-                                        <p className="text-slate-500 text-sm mt-1">Soyez le premier à lancer le débat.</p>
+                                        <h3 className="text-lg font-bold text-slate-800">No active topics</h3>
+                                        <p className="text-slate-500 text-sm mt-1">Be the first to start the discussion.</p>
                                     </div>
                                 ) : (
                                     posts?.map((post) => (
@@ -340,7 +340,7 @@ const Chat = () => {
                                                                 <span className="font-bold text-slate-900 text-sm">{post.user_name}</span>
                                                                 <span className="text-[10px] text-slate-400 font-bold flex items-center gap-1 uppercase tracking-wider">
                                                                     <Calendar className="w-3 h-3" />
-                                                                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: fr })}
+                                                                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: enUS })}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -405,7 +405,7 @@ const Chat = () => {
                                                     </button>
                                                     <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 ml-2">
                                                         <MessageSquare className="w-4 h-4" />
-                                                        {post.chat_comments?.length || 0} Commentaires
+                                                        {post.chat_comments?.length || 0} Comments
                                                     </div>
                                                 </div>
                                             </div>
@@ -422,7 +422,7 @@ const Chat = () => {
                                                                 <div className="flex justify-between items-center mb-1">
                                                                     <span className="font-bold text-slate-900">{comment.user_name}</span>
                                                                     <span className="text-[9px] text-slate-400">
-                                                                        {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: fr })}
+                                                                        {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: enUS })}
                                                                     </span>
                                                                 </div>
                                                                 <p className="text-slate-600 font-medium">{comment.content}</p>
@@ -432,7 +432,7 @@ const Chat = () => {
 
                                                     <div className="relative bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
                                                         <Input
-                                                            placeholder="Ajouter une réponse..."
+                                                            placeholder="Add a reply..."
                                                             className="h-9 border-0 focus-visible:ring-0 text-xs font-medium pl-3 pr-10"
                                                             onKeyDown={(e) => {
                                                                 if (e.key === 'Enter') {
@@ -476,13 +476,13 @@ const Chat = () => {
                                         </Avatar>
                                         <div>
                                             <p className="text-sm font-bold text-white">{activeUserName}</p>
-                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Connecté</p>
+                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Connected</p>
                                         </div>
                                     </div>
                                 </div>
                                 <CardContent className="p-4 space-y-2">
                                     <div className="flex justify-between items-center text-xs p-2.5 bg-slate-50 rounded-lg">
-                                        <span className="text-slate-500 font-bold uppercase tracking-tighter">Mes Publications</span>
+                                        <span className="text-slate-500 font-bold uppercase tracking-tighter">My Posts</span>
                                         <span className="font-bold text-slate-900">{posts?.filter(p => p.user_id === user?.id).length || 0}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-xs p-2.5 bg-slate-50 rounded-lg">
@@ -498,7 +498,7 @@ const Chat = () => {
                             <Card className="border border-slate-200 shadow-sm rounded-xl bg-white p-6">
                                 <h3 className="text-sm font-bold text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-widest">
                                     <TrendingUp className="w-4 h-4 text-royal-emerald" />
-                                    Sujets Chauds
+                                    Hot Topics
                                 </h3>
                                 <div className="space-y-5">
                                     {[
@@ -514,17 +514,17 @@ const Chat = () => {
                                     ))}
                                 </div>
                                 <Button variant="outline" className="w-full mt-6 border-slate-200 text-slate-600 font-bold text-xs h-10 rounded-lg">
-                                    Parcourir tout
+                                    Browse all
                                 </Button>
                             </Card>
 
                             {/* Guidelines */}
                             <div className="p-5 rounded-xl bg-slate-900/5 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 text-xs uppercase mb-2 tracking-widest">Charte d'utilisation</h4>
+                                <h4 className="font-bold text-slate-900 text-xs uppercase mb-2 tracking-widest">Code of conduct</h4>
                                 <p className="text-slate-500 text-xs font-medium leading-relaxed">
-                                    Restez factuels dans vos analyses. Les débats passionnés sont encouragés tant qu'ils restent sportifs.
+                                    Stay factual in your analysis. Passionate debates are encouraged as long as they remain sportsmanlike.
                                 </p>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                 </div>

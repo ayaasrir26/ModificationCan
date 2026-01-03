@@ -40,7 +40,7 @@ export const FinalMatch = ({
                     <div className="inline-flex items-center gap-2 sm:gap-3 mb-2">
                         <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500" />
                         <h3 className="font-bold text-lg sm:text-xl uppercase tracking-wider text-gray-800">
-                            Finale
+                            Final
                         </h3>
                     </div>
                 </div>
@@ -80,7 +80,7 @@ export const FinalMatch = ({
                                         {team1?.code || "TBD"}
                                     </span>
                                     <span className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide font-medium">
-                                        {team1?.name || "À déterminer"}
+                                        {team1?.name || "To be decided"}
                                     </span>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@ export const FinalMatch = ({
                                         {team2?.code || "TBD"}
                                     </span>
                                     <span className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide font-medium">
-                                        {team2?.name || "À déterminer"}
+                                        {team2?.name || "To be decided"}
                                     </span>
                                 </div>
                             </div>

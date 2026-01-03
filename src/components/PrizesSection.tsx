@@ -8,23 +8,23 @@ interface PrizesSectionProps {
 export const PrizesSection = ({ winner }: PrizesSectionProps) => {
     const prizes = [
         {
-            rank: "1er Prix",
-            title: winner ? `Champion: ${winner.name}` : "Maillot Officiel + VIP",
-            description: "Le maillot officiel de l'équipe championne et une place VIP pour un match.",
+            rank: "1st Prize",
+            title: winner ? `Champion: ${winner.name}` : "Official Jersey + VIP",
+            description: "The official jersey of the champion team and a VIP ticket to a match.",
             icon: <Star className="w-8 h-8 text-yellow-500" />,
             color: "bg-yellow-50 border-yellow-200",
         },
         {
-            rank: "2ème Prix",
-            title: "Ballon Officiel",
-            description: "Le ballon officiel du tournoi dédicacé par les joueurs.",
+            rank: "2nd Prize",
+            title: "Official Match Ball",
+            description: "The official tournament ball autographed by players.",
             icon: <Medal className="w-8 h-8 text-slate-400" />,
             color: "bg-slate-50 border-slate-200",
         },
         {
-            rank: "3ème Prix",
-            title: "Goodies CAN 2025",
-            description: "Un pack exclusif de produits dérivés du tournoi.",
+            rank: "3rd Prize",
+            title: "CAN 2025 Goodies",
+            description: "An exclusive pack of tournament merchandise.",
             icon: <Medal className="w-8 h-8 text-amber-700" />,
             color: "bg-orange-50 border-orange-200",
         },
@@ -36,13 +36,13 @@ export const PrizesSection = ({ winner }: PrizesSectionProps) => {
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">
                         <Gift className="w-3 h-3" />
-                        Récompenses
+                        Prizes
                     </div>
                     <h2 className="text-3xl font-display font-bold text-slate-900 mb-2">
-                        Gagnez des Cadeaux !
+                        Win Prizes!
                     </h2>
                     <p className="text-slate-600 max-w-xl mx-auto">
-                        Faites vos meilleures prédictions et tentez de remporter l'un de nos prix exclusifs CAN 2025.
+                        Make your best predictions and try to win one of our exclusive CAN 2025 prizes.
                     </p>
                 </div>
 

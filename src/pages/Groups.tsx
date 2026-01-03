@@ -5,6 +5,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+import { TeamStats } from '@/components/TeamState';
+
 export default function Groups() {
   const { data: teams, isLoading, error: queryError, refetch } = useQuery({
     queryKey: ['teams'],
@@ -36,15 +38,15 @@ export default function Groups() {
     <div className="min-h-screen bg-transparent">
       <Header />
       <main className="container mx-auto px-4 py-12">
-        <div className="text-center mb-10">
-          <h1 className="font-display text-5xl text-foreground mb-2">All Groups</h1>
-          <p className="text-muted-foreground">CAN 2025 Morocco • 24 Teams</p>
+        <div className="text-center mb-10 mt-20">
+          <h1 className="font-display text-5xl text-white mb-2">All Groups</h1>
+          <p className="text-muted-foreground  text-white">CAN 2025 Morocco • 24 Teams</p>
         </div>
 
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground animate-pulse">Chargement des données...</p>
+            <p className="text-sm text-muted-foreground animate-pulse">Loading data...</p>
           </div>
         ) : queryError ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white/50 backdrop-blur-sm rounded-3xl border border-star-red/20 shadow-xl">
@@ -52,10 +54,9 @@ export default function Groups() {
               <Shield className="w-8 h-8 text-star-red" />
             </div>
             <div className="text-center">
-              <h2 className="text-xl font-bold text-royal-emerald mb-1">Erreur de connexion</h2>
+              <h2 className="text-xl font-bold text-royal-emerald mb-1">Connection error</h2>
               <p className="text-sm text-muted-foreground max-w-md">
-                Nous n'avons pas pu charger les données du tournoi.
-                Vérifiez votre connexion ou la configuration de la base de données.
+                We couldn't load the tournament data. Please check your connection or database settings.
               </p>
               {queryError instanceof Error && (
                 <p className="text-[10px] font-mono text-star-red/60 mt-2 bg-black/5 p-2 rounded">
@@ -68,7 +69,7 @@ export default function Groups() {
               variant="outline"
               className="mt-2 border-royal-emerald/20 text-royal-emerald hover:bg-royal-emerald hover:text-white transition-all"
             >
-              Réessayer la connexion
+              Retry connection
             </Button>
           </div>
         ) : (
@@ -78,6 +79,11 @@ export default function Groups() {
             ))}
           </div>
         )}
+        <br/>
+        <hr />
+        <br/>
+            <h1 className="text-center font-display text-5xl text-white mb-2">Goals/Red Cards/Yellow Cards</h1>
+<TeamStats/>
       </main>
     </div>
   );

@@ -206,10 +206,10 @@ export const TournamentBracket = ({ teams }: TournamentBracketProps) => {
           {/* Clean Header Section */}
           <div className="text-center mb-12">
             <h2 className="text-5xl font-bold text-gray-900 mb-2 uppercase tracking-tight">
-              Tableau Final
+              Final Bracket
             </h2>
             <p className="text-sm text-gray-500 uppercase tracking-widest">
-              Phase éliminatoire de la CAN 2025
+              CAN 2025 Knockout Stage
             </p>
           </div>
 

@@ -6,6 +6,7 @@ import { PrizesSection } from "@/components/PrizesSection";
 import { Leaderboard } from "@/components/Leaderboard";
 import { Loader2, Save, LogIn, Trophy, Target, Users, Calendar, Download } from "lucide-react";
 import { useContext, useRef } from "react";
+import MatchResults from '@/components/MatchResults';
 import { PredictionContext } from "@/contexts/PredictionContext";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
@@ -21,6 +22,10 @@ const Bracket = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isCapturing, setIsCapturing] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewBlob, setPreviewBlob] = useState<Blob | null>(null);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   const componentRef = useRef<HTMLDivElement>(null);
   const bracketRef = useRef<HTMLDivElement>(null);
 
@@ -36,8 +41,8 @@ const Bracket = () => {
     if (!target) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: "L'élément du tableau n'a pas été trouvé"
+        title: "Error",
+        description: "Bracket element not found"
       });
       return;
     }
@@ -46,8 +51,8 @@ const Bracket = () => {
       setIsCapturing(true);
 
       toast({
-        title: "Préparation de l'image...",
-        description: "Veuillez patienter pendant la génération de votre tableau."
+        title: "Preparing image...",
+        description: "Please wait while your bracket is generated."
       });
 
       // Ensure the bracket is visible before capture
@@ -78,55 +83,91 @@ const Bracket = () => {
         }
       });
 
-      const dataUrl = canvas.toDataURL('image/png');
+      // create blob to preview
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(b => resolve(b), 'image/png'));
+      if (!blob) throw new Error("Image conversion error.");
 
-      // Native Share API if available (best for mobile)
-      if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) {
-        try {
-          const response = await fetch(dataUrl);
-          const blob = await response.blob();
-          const file = new File([blob], 'mon-tableau-can2025.png', { type: 'image/png' });
-
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              files: [file],
-              title: 'Mon Tableau CAN 2025',
-              text: 'Voici mes pronostics pour la CAN 2025 !'
-            });
-            toast({
-              title: "Partagé !",
-              description: "Votre tableau a été partagé avec succès."
-            });
-            return;
-          }
-        } catch (shareError) {
-          console.error("Share failed, falling back to download:", shareError);
-        }
-      }
-
-      // Download Fallback
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = 'mon-tableau-can2025.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const objectUrl = URL.createObjectURL(blob);
+      setPreviewBlob(blob);
+      setPreviewUrl(objectUrl);
+      setIsShareOpen(true);
 
       toast({
-        title: "Téléchargé !",
-        description: "Votre tableau a été enregistré."
+        title: "Image ready",
+        description: "Choose an option to share or download."
       });
 
+      setIsCapturing(false);
+      return;
     } catch (error) {
       console.error("Capture error:", error);
       toast({
         variant: "destructive",
-        title: "Erreur de partage",
-        description: "Impossible de générer l'image. Veuillez réessayer ou faire une capture d'écran."
+        title: "Share error",
+        description: "Unable to generate the image. Please try again or use a screenshot."
       });
     } finally {
       setIsCapturing(false);
     }
+  };
+
+  // Helpers for preview and sharing
+
+  const handleNativeShare = async () => {
+    if (!previewBlob) return;
+    try {
+      const file = new File([previewBlob], 'bracket.png', { type: 'image/png' });
+      const nav = navigator as unknown as { canShare?: (d?: ShareData) => boolean; share?: (d?: ShareData) => Promise<void> };
+
+      if (typeof nav.canShare === 'function' && nav.canShare({ files: [file] })) {
+        await nav.share?.({ files: [file], title: 'My CAN 2025 bracket', text: 'Here are my predictions!' });
+        toast({ title: "Shared!" });
+      } else {
+        toast({ title: "Sharing not supported", description: "Please use download instead." });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({ variant: "destructive", title: "Share error" });
+    }
+  };
+
+  const copyImageToClipboard = async () => {
+    if (!previewBlob) return;
+    try {
+      const ClipboardItemCtor = (window as unknown as { ClipboardItem?: new (items: Record<string, Blob>) => unknown }).ClipboardItem;
+      if (!ClipboardItemCtor || !navigator.clipboard?.write) {
+        throw new Error('Clipboard API not available');
+      }
+      const item = new ClipboardItemCtor({ ['image/png']: previewBlob });
+      // navigator.clipboard.write expects ClipboardItem[] in browsers that support this
+      await (navigator.clipboard.write as unknown as (items: unknown[]) => Promise<void>)([item]);
+      toast({ title: "Image copied" });
+    } catch (err) {
+      console.error(err);
+      toast({ variant: "destructive", title: "Unable to copy the image" });
+    }
+  };
+
+  // web/social share helpers removed; keep native share, download and clipboard functions only
+
+
+  const downloadPreview = () => {
+    if (!previewUrl) return;
+    const a = document.createElement('a');
+    a.href = previewUrl;
+    a.download = 'mon-tableau-can2025.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const closeShareModal = () => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewUrl(null);
+    setPreviewBlob(null);
+    setIsShareOpen(false);
   };
 
   const { data: teams, isLoading } = useQuery({
@@ -279,7 +320,7 @@ const Bracket = () => {
                 ) : (
                   <Download className="w-4 md:w-5 h-4 md:h-5 mr-2 md:mr-3" />
                 )}
-                {isCapturing ? "Génération..." : "Download diagram"}
+                {isCapturing ? "Generating..." : "Download diagram"}
               </Button>
             </div>
 
@@ -360,6 +401,36 @@ const Bracket = () => {
         </div>
       </main >
 
+      {/* Share / Preview Modal */}
+      {isShareOpen && (
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={closeShareModal} />
+          <div className="relative bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
+            <div className="flex gap-3">
+              {previewUrl ? (
+                <img src={previewUrl} className="w-32 h-24 object-cover rounded" alt="Preview" />
+              ) : (
+                <div className="w-32 h-24 bg-gray-100 rounded flex items-center justify-center text-sm">Preview</div>
+              )}
+              <div className="flex-1">
+                <h4 className="font-semibold">Share your bracket</h4>
+                <p className="text-sm text-gray-500">Choose an option below</p>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 gap-2">
+              <Button onClick={handleNativeShare} className="w-full">Native Share</Button>
+              <Button onClick={downloadPreview} className="w-full">Download</Button>
+              <Button onClick={copyImageToClipboard} className="w-full">Copy Image</Button>
+            </div>
+
+            <div className="mt-3 text-right">
+              <Button variant="ghost" onClick={closeShareModal}>Close</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Prizes Section */}
       < div className="bg-gradient-to-b from-gray-50 to-white py-6 md:py-16" >
         <PrizesSection winner={champion} />
@@ -397,7 +468,7 @@ const Bracket = () => {
               ) : (
                 <Download className="w-5 h-5 mr-2" />
               )}
-              {isCapturing ? "Génération..." : "Partager"}
+              {isCapturing ? "Generating..." : "Share"}
             </Button>
           </div>
         )

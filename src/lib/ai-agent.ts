@@ -158,7 +158,7 @@ export class AIAgent {
     } catch (error: any) {
       if (error?.status === 429) {
         return {
-          text: "Désolé, j'ai atteint ma limite de messages pour aujourd'hui (Quota Exceeded). Réessayez plus tard ou utilisez une autre clé API."
+          text: "Sorry, I have reached my message limit for today (Quota Exceeded). Please try again later or use another API key."
         };
       }
       console.error("AI Agent Error:", error);

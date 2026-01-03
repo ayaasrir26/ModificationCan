@@ -80,7 +80,7 @@ export const Leaderboard = () => {
             <div className="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
                 <h2 className="text-xl font-display font-bold text-slate-900 flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-secondary" />
-                    Classement
+                    Leaderboard
                 </h2>
                 <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">
                     Top 10 Participants
@@ -91,8 +91,8 @@ export const Leaderboard = () => {
                 <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-slate-100 bg-slate-50/50">
-                            <th className="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rang</th>
-                            <th className="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Utilisateur</th>
+                            <th className="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rank</th>
+                            <th className="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">User</th>
                             <th className="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Champion</th>
                             <th className="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider text-right">Score</th>
                         </tr>
@@ -101,7 +101,7 @@ export const Leaderboard = () => {
                         {entries.length === 0 ? (
                             <tr>
                                 <td colSpan={4} className="px-6 py-12 text-center">
-                                    <p className="text-slate-400 italic text-sm">Aucune donnée disponible</p>
+                                    <p className="text-slate-400 italic text-sm">No data available</p>
                                 </td>
                             </tr>
                         ) : (

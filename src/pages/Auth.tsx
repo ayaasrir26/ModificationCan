@@ -56,14 +56,14 @@ export default function Auth() {
 
       if (error) {
         if (error.message.includes('already registered')) {
-          toast.error('Cet email est déjà enregistré. Veuillez vous connecter.', {
+          toast.error('This email is already registered. Please sign in.', {
             action: {
-              label: 'Se connecter',
+              label: 'Sign in',
               onClick: () => setIsSignUp(false)
             }
           });
         } else if (error.message.includes('invalid')) {
-          toast.error('Identifiants incorrects. Veuillez réessayer.', {
+          toast.error('Invalid credentials. Please try again.', {
             icon: <Shield className="w-4 h-4 text-star-red" />
           });
         } else {
@@ -72,13 +72,13 @@ export default function Auth() {
           });
         }
       } else {
-        toast.success(isSignUp ? 'Compte créé avec succès !' : 'Bienvenue !', {
+        toast.success(isSignUp ? 'Account created successfully!' : 'Welcome!', {
           icon: <Sparkles className="w-4 h-4 text-saffron" />
         });
         navigate('/');
       }
     } catch (err) {
-      toast.error('Une erreur inattendue est survenue', {
+      toast.error('An unexpected error occurred', {
         icon: <Shield className="w-4 h-4 text-star-red" />
       });
     } finally {
@@ -133,7 +133,7 @@ export default function Auth() {
           <div className="p-2 bg-white/10 rounded-xl group-hover:bg-saffron/20 group-hover:-translate-x-1 transition-all duration-300">
             <ArrowLeft className="w-4 h-4" />
           </div>
-          Retour à l'accueil
+          Back to home
         </button>
 
         <div className="glass-zellige rounded-[2rem] p-8 shadow-2xl relative overflow-hidden group/form flex flex-col justify-center backdrop-blur-sm border border-white/10">
@@ -155,15 +155,15 @@ export default function Auth() {
               />
             </div>
             <h1 className="font-royal text-3xl text-royal-emerald mb-2 uppercase tracking-tighter text-center">
-              {isSignUp ? 'REJOINDRE' : 'ACCÉDER'} <span className="text-star-red relative">
-                L'ÉLITE
+              {isSignUp ? 'JOIN' : 'SIGN IN'} <span className="text-star-red relative">
+                THE ELITE
                 <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-saffron to-transparent opacity-60" />
               </span>
             </h1>
             <div className="flex items-center justify-center gap-3 mb-2">
               <span className="h-0.5 w-4 bg-gradient-to-r from-transparent to-saffron/60 rounded-full" />
               <p className="text-royal-emerald/60 font-black uppercase tracking-[0.2em] text-[10px] bg-white/5 px-3 py-1 rounded-full">
-                {isSignUp ? 'Création de compte' : 'Espace Privé'}
+                {isSignUp ? 'Create Account' : 'Member Area'}
               </p>
               <span className="h-0.5 w-4 bg-gradient-to-l from-transparent to-saffron/60 rounded-full" />
             </div>
@@ -257,9 +257,9 @@ export default function Auth() {
               </div>
               {password && isSignUp && (
                 <div className="text-[10px] text-royal-emerald/60 font-medium mt-1">
-                  Sécurité : {passwordStrength >= 75 ? 'Forte' : passwordStrength >= 50 ? 'Moyenne' : 'Faible'}
+                  Strength: {passwordStrength >= 75 ? 'Strong' : passwordStrength >= 50 ? 'Medium' : 'Weak'}
                 </div>
-              )}
+              )} 
             </div>
 
             <Button
@@ -271,20 +271,20 @@ export default function Auth() {
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  {isSignUp ? 'CRÉATION EN COURS...' : 'CONNEXION...'}
+                  {isSignUp ? 'Creating account...' : 'Signing in...'}
                 </>
               ) : (
                 <>
-                  {isSignUp ? 'CRÉER MON DESTIN' : 'SE CONNECTER'}
+                  {isSignUp ? 'CREATE ACCOUNT' : 'SIGN IN'}
                   <Sparkles className="w-4 h-4 ml-2 opacity-60 group-hover:opacity-100 transition-opacity" />
                 </>
-              )}
+              )} 
             </Button>
           </form>
 
           <div className="mt-6 pt-6 border-t border-royal-emerald/10 text-center shrink-0">
             <p className="text-xs font-black text-royal-emerald/50 uppercase tracking-widest">
-              {isSignUp ? 'Déjà membre de l\'élite ?' : "Pas encore initié ?"}{' '}
+              {isSignUp ? 'Already a member of the elite?' : "Not registered yet?"}{' '}
               <button
                 onClick={() => {
                   setIsSignUp(!isSignUp);
@@ -292,12 +292,12 @@ export default function Auth() {
                 }}
                 className="text-star-red hover:text-royal-emerald transition-colors ml-1 font-bold relative group"
               >
-                {isSignUp ? 'SE CONNECTER' : "S'INSCRIRE"}
+                {isSignUp ? 'SIGN IN' : "SIGN UP"}
                 <span className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-star-red/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </button>
             </p>
             <p className="text-[10px] text-royal-emerald/30 mt-2 font-medium">
-              Vos données sont sécurisées avec un chiffrement de niveau militaire
+              Your data is secured with military-grade encryption
             </p>
           </div>
         </div>
@@ -305,7 +305,7 @@ export default function Auth() {
         {/* Footer Note */}
         <div className="text-center mt-6">
           <p className="text-[9px] text-white/30 uppercase tracking-widest font-royal">
-            © 2025 MOROCCO ELITE • TOUS DROITS RÉSERVÉS
+            © 2025 MOROCCO ELITE • ALL RIGHTS RESERVED
           </p>
         </div>
       </div>

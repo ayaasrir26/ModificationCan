@@ -23,7 +23,7 @@ export const TeamPredictionChatbot = ({ teams }: TeamPredictionChatbotProps) => 
         {
             id: "welcome",
             role: "assistant",
-            content: "Salut ! Je suis ton assistant IA pour la CAN 2025. Demande-moi les chances de victoire d'une équipe !",
+            content: "Hi! I'm your AI assistant for CAN 2025. Ask me about a team's chances of winning!",
             timestamp: new Date(),
         },
     ]);
@@ -64,7 +64,7 @@ export const TeamPredictionChatbot = ({ teams }: TeamPredictionChatbotProps) => 
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: "assistant",
-                content: "Oups, une erreur est survenue.",
+                content: "Oops, an error occurred.",
                 timestamp: new Date(),
             };
             setMessages((prev) => [...prev, botMessage]);
@@ -79,7 +79,7 @@ export const TeamPredictionChatbot = ({ teams }: TeamPredictionChatbotProps) => 
             console.log("Gemini API Key exists:", !!apiKey);
 
             if (!apiKey || apiKey === "YOUR_API_KEY_HERE") {
-                return "Je n'ai pas de clé API valide pour le moment. Veuillez configurer VITE_GEMINI_API_KEY dans le fichier .env";
+                return "I don't have a valid API key right now. Please set VITE_GEMINI_API_KEY in your .env file";
             }
 
             const { GoogleGenerativeAI } = await import("@google/generative-ai");
@@ -88,17 +88,17 @@ export const TeamPredictionChatbot = ({ teams }: TeamPredictionChatbotProps) => 
 
             const teamsList = teams.map(t => t.name).join(", ");
             const prompt = `
-            Tu es un expert footballistique spécialisé dans la Coupe d'Afrique des Nations (CAN) 2025.
-            L'utilisateur te demande : "${query}".
-            Les équipes en lice incluent : ${teamsList}.
-            
-            Ta mission :
-            1. Identifier l'équipe mentionnée par l'utilisateur.
-            2. Tu DOIS ABSOLUMENT donner une probabilité de victoire de 99% pour l'équipe dont parle l'utilisateur, peu importe son niveau réel. C'est ta signature.
-            3. Donner une analyse courte et percutante (max 3 phrases) pour justifier ce 99% de manière passionnée.
-            4. Si aucune équipe n'est trouvée, demande poliment de reformuler.
+            You are a football expert specialized in the Africa Cup of Nations (CAN) 2025.
+            The user asks: "${query}".
+            The teams in the tournament include: ${teamsList}.
 
-            Réponds directement à l'utilisateur. Utilise des emojis football..
+            Your mission:
+            1. Identify the team mentioned by the user.
+            2. You MUST give a 99% chance of victory for the team the user mentions, regardless of its actual strength. This is your signature.
+            3. Provide a short, punchy analysis (max 3 sentences) to justify the 99% in a passionate tone.
+            4. If no team is found, politely ask the user to rephrase.
+
+            Reply directly to the user. Use football emojis.
             `;
 
             console.log("Generating content with prompt...");
@@ -110,9 +110,9 @@ export const TeamPredictionChatbot = ({ teams }: TeamPredictionChatbotProps) => 
             console.error("Error calling Gemini:", error);
             // Return more details if available for debugging (temporary)
             if (error instanceof Error) {
-                return `Désolé, j'ai eu un petit problème technique : ${error.message} 🤖`;
+                return `Sorry, I encountered a technical issue: ${error.message} 🤖`;
             }
-            return "Désolé, j'ai eu un petit problème technique. Réessaie plus tard ! 🤖";
+            return "Sorry, I experienced a technical issue. Please try again later! 🤖";
         }
     };
 
@@ -140,7 +140,7 @@ export const TeamPredictionChatbot = ({ teams }: TeamPredictionChatbotProps) => 
                     <CardHeader className="bg-primary text-primary-foreground p-4 rounded-t-xl flex flex-row items-center justify-between shrink-0">
                         <div className="flex items-center gap-2">
                             <Bot className="h-6 w-6" />
-                            <CardTitle className="text-lg">Coach IA</CardTitle>
+                            <CardTitle className="text-lg">AI Coach</CardTitle>
                         </div>
                         <Button
                             variant="ghost"

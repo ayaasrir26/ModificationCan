@@ -50,11 +50,11 @@ export default function Admin() {
             setMatches(data || []);
         } catch (error: any) {
             console.error('Error fetching matches:', error);
-            toast.error("Erreur lors du chargement des matchs");
+            toast.error("Error loading matches");
         } finally {
             setLoading(false);
         }
-    };
+    }; 
 
     const handleUpdateScore = async (matchId: string, homeScore: number | null, awayScore: number | null, status: string) => {
         setUpdatingMatchId(matchId);
@@ -71,11 +71,11 @@ export default function Admin() {
 
             if (error) throw error;
 
-            toast.success("Score mis à jour avec succès");
+            toast.success("Score updated successfully");
             fetchMatches(); // Refresh list
         } catch (error: any) {
             console.error('Error updating match:', error);
-            toast.error("Erreur lors de la mise à jour du match");
+            toast.error("Error updating match");
         } finally {
             setUpdatingMatchId(null);
         }
@@ -89,7 +89,7 @@ export default function Admin() {
             toast.success("Points calculation completed for all users!");
         } catch (error: any) {
             console.error('Error running scoring engine:', error);
-            toast.error("Erreur lors du calcul des points : " + error.message);
+            toast.error("Error calculating points: " + error.message);
         } finally {
             setIsCalculating(false);
         }
@@ -112,17 +112,17 @@ export default function Admin() {
                         <div className="mx-auto w-16 h-16 bg-star-red/10 rounded-full flex items-center justify-center mb-4">
                             <AlertTriangle className="w-8 h-8 text-star-red" />
                         </div>
-                        <CardTitle className="text-2xl font-royal text-royal-emerald uppercase">Accès Refusé</CardTitle>
+                        <CardTitle className="text-2xl font-royal text-royal-emerald uppercase">Access Denied</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center space-y-6 pb-8">
                         <p className="text-royal-emerald/60">
-                            Cette zone est strictement réservée au commandement supérieur de la CAN 2025.
+                            This area is restricted to tournament administrators.
                         </p>
                         <Button
                             onClick={() => window.location.href = '/'}
                             className="w-full btn-royal"
                         >
-                            Retourner à l'arène
+                            Return to dashboard
                         </Button>
                     </CardContent>
                 </Card>
@@ -189,7 +189,7 @@ export default function Admin() {
                         {matches.length === 0 && (
                             <div className="glass-zellige p-12 text-center rounded-[2rem]">
                                 <AlertTriangle className="w-12 h-12 text-saffron mx-auto mb-4" />
-                                <p className="text-royal-emerald/60 font-medium">Aucun match trouvé. Assurez-vous d'avoir exécuté le script SQL setup.</p>
+                                <p className="text-royal-emerald/60 font-medium">No matches found. Make sure you have run the SQL setup script.</p>
                             </div>
                         )}
 

@@ -79,7 +79,7 @@ export function Header() {
                   className="bg-star-red/10 text-star-red hover:bg-star-red hover:text-white rounded-xl border border-star-red/20 font-bold transition-all"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
-                  Quitter
+                  Logout
                 </Button>
               </div>
             ) : (
@@ -88,13 +88,13 @@ export function Header() {
                   onClick={() => navigate('/auth')}
                   className="text-sm font-black text-royal-emerald/80 hover:text-royal-emerald uppercase tracking-widest px-4 py-2 transition-all"
                 >
-                  Connexion
+                  Sign in
                 </button>
                 <Button
                   onClick={() => navigate('/auth?mode=signup')}
                   className="btn-royal shadow-royal-emerald/20"
                 >
-                  S'inscrire
+                  Sign up
                 </Button>
               </div>
             )}
@@ -141,7 +141,7 @@ export function Header() {
                   }}
                   className="px-6 py-3 text-sm font-black text-star-red bg-star-red/5 rounded-2xl transition-all text-left uppercase tracking-widest"
                 >
-                  Déconnexion
+                  Logout
                 </button>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -150,7 +150,7 @@ export function Header() {
                     className="px-6 py-3 text-sm font-black text-royal-emerald/80 bg-white/40 rounded-2xl transition-all text-center uppercase tracking-widest"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Connexion
+                    Sign in
                   </Link>
                   <Button
                     onClick={() => {
@@ -159,7 +159,7 @@ export function Header() {
                     }}
                     className="btn-royal w-full py-6 text-base"
                   >
-                    Commencer l'aventure
+                    Get started
                   </Button>
                 </div>
               )}
