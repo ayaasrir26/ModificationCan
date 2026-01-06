@@ -28,7 +28,7 @@ export function Footer() {
 
        <div className="flex gap-4 mt-5">
   {[
-    { icon: FaGithub , link: "https://github.com/ayaasrir26/CanProjet" },
+    { icon: FaGithub , link: "https://github.com/ayaasrir26/ModificationCan" },
     { icon: FaInstagram,link: "https://www.instagram.com/cangoal25/?utm_source=qr&igsh=MTE1NXA4b3YzZWNjdQ%3D%3D#" },
   ].map(({ icon: Icon, link }, i) => (
     <a
