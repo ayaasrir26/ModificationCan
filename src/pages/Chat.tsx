@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   MessageSquare, Send, Heart, ThumbsDown,
   Trash2, Edit2, ImageIcon, Users,
-  Calendar, Plus, TrendingUp
+  Calendar, Plus
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -72,13 +72,13 @@ const Chat = () => {
   useEffect(() => {
     let storedName = localStorage.getItem("chat_user_name");
     if (!storedName) {
-      storedName = "Fan de Foot " + Math.floor(Math.random() * 1000);
+      storedName = "Football Fan " + Math.floor(Math.random() * 1000);
       localStorage.setItem("chat_user_name", storedName);
     }
     setLocalUserName(storedName);
   }, []);
 
-  const activeUserName = user ? (profile?.full_name || user.email?.split('@')[0] || "Anonyme") : localUserName;
+  const activeUserName = user ? (profile?.full_name || user.email?.split('@')[0] || "Anonymous") : localUserName;
 
   // Fetch posts
   const { data: posts, isLoading } = useQuery({
@@ -188,33 +188,32 @@ const Chat = () => {
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
                 <MessageSquare className="w-8 h-8 text-royal-emerald" />
-                Forum Communautaire
+                Community Forum
               </h1>
               <p className="text-slate-500 font-medium mt-1">
-                Analyses techniques et discussions autour de la CAN 2025
+                Technical analyses and discussions about CAN 2025
               </p>
             </div>
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 text-xs font-bold text-slate-600">
                 <Users className="w-4 h-4" />
-                1,240 En ligne
+                1,240 Online
               </div>
-             <Button
-  onClick={() => setIsFormOpen(!isFormOpen)}
-  className={`h-11 px-6 rounded-lg font-bold transition-all ${
-    isFormOpen
-      ? 'bg-blue-200 text-blue-700 hover:bg-blue-300 shadow-sm'
-      : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md ring-1 ring-blue-600/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600'
-  }`}
->
-  {isFormOpen ? 'Annuler' : (
-    <>
-      <Plus className="w-4 h-4 mr-2" />
-      Nouveau Sujet
-    </>
-  )}
-</Button>
-
+              <Button
+                onClick={() => setIsFormOpen(!isFormOpen)}
+                className={`h-11 px-6 rounded-lg font-bold transition-all ${
+                  isFormOpen
+                    ? 'bg-blue-200 text-blue-700 hover:bg-blue-300 shadow-sm'
+                    : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md ring-1 ring-blue-600/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600'
+                }`}
+              >
+                {isFormOpen ? 'Cancel' : (
+                  <>
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Topic
+                  </>
+                )}
+              </Button>
             </div>
           </div>
 
@@ -240,7 +239,7 @@ const Chat = () => {
                             className="h-11 border-slate-200 focus:border-royal-emerald focus:ring-1 focus:ring-royal-emerald rounded-lg font-bold text-slate-900"
                           />
                           <Textarea
-                            placeholder="Develop your argument..."
+                            placeholder="Write your content..."
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             className="min-h-[120px] border-slate-200 focus:border-royal-emerald focus:ring-1 focus:ring-royal-emerald rounded-lg font-medium text-slate-600 resize-none"
@@ -265,13 +264,12 @@ const Chat = () => {
                             Media
                           </label>
                         </div>
-                       <Button
-  disabled={shareMutation.isPending || !title.trim() || !content.trim()}
-  className="h-10 px-6 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-bold shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
->
-  {shareMutation.isPending ? "Publishing..." : (editingId ? "Save" : "Publish topic")}
-</Button>
-
+                        <Button
+                          disabled={shareMutation.isPending || !title.trim() || !content.trim()}
+                          className="h-10 px-6 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-bold shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                        >
+                          {shareMutation.isPending ? "Publishing..." : (editingId ? "Save" : "Publish Topic")}
+                        </Button>
                       </div>
 
                       {image && (
@@ -307,7 +305,7 @@ const Chat = () => {
                   </div>
                 ) : (
                   posts?.map((post) => (
-                    <Card key={post.id} className="border border-slate-200 shadow-sm rounded-xl overflow-hidden bg-white hover:border-royal-emerald/30 transition-all duration-300">
+                     <Card key={post.id} className="border border-slate-200 shadow-sm rounded-xl overflow-hidden bg-white hover:border-royal-emerald/30 transition-all duration-300">
                       <div className="p-5">
                         {/* Post Header */}
                         <div className="flex items-center justify-between mb-4">
@@ -375,59 +373,9 @@ const Chat = () => {
                             {post.dislikes + (localReactions[post.id] === 'dislike' ? 1 : 0)}
                           </button>
 
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 ml-2">
-                            <MessageSquare className="w-4 h-4" />
-                            {post.chat_comments?.length || 0} Comments
-                          </div>
+                          
                         </div>
 
-                        {/* Comments */}
-                        {post.chat_comments?.length > 0 && (
-                          <div className="bg-slate-50 p-4 border-t border-slate-100 space-y-3">
-                            {post.chat_comments.slice(0, 2).map((comment) => (
-                              <div key={comment.id} className="flex gap-3">
-                                <Avatar className="h-6 w-6 shrink-0 border border-slate-200">
-                                  <AvatarFallback className="text-[8px] font-bold">{comment.user_name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1 bg-white p-2 rounded-lg border border-slate-200 text-xs shadow-sm">
-                                  <div className="flex justify-between items-center mb-1">
-                                    <span className="font-bold text-slate-900">{comment.user_name}</span>
-                                    <span className="text-[9px] text-slate-400">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: enUS })}</span>
-                                  </div>
-                                  <p className="text-slate-600 font-medium">{comment.content}</p>
-                                </div>
-                              </div>
-                            ))}
-
-                            <div className="relative bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
-                              <Input
-                                placeholder="Add a reply..."
-                                className="h-9 border-0 focus-visible:ring-0 text-xs font-medium pl-3 pr-10"
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') {
-                                    const val = (e.target as HTMLInputElement).value;
-                                    if (val.trim()) {
-                                      commentMutation.mutate({ postId: post.id, text: val });
-                                      (e.target as HTMLInputElement).value = '';
-                                    }
-                                  }
-                                }}
-                              />
-                              <button
-                                className="absolute right-0 top-0 h-full px-3 text-royal-emerald hover:bg-royal-emerald/10 transition-colors rounded-r-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-royal-emerald"
-                                onClick={(e) => {
-                                  const input = (e.currentTarget.previousSibling as HTMLInputElement);
-                                  if (input.value.trim()) {
-                                    commentMutation.mutate({ postId: post.id, text: input.value });
-                                    input.value = '';
-                                  }
-                                }}
-                              >
-                                <Send className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </Card>
                   ))
@@ -437,17 +385,14 @@ const Chat = () => {
 
             {/* Sidebar */}
             <div className="lg:col-span-4 space-y-6">
-              {/* User Info & Stats */}
               <Card className="border border-slate-200 shadow-sm rounded-xl bg-white overflow-hidden">
-                <div className="bg-slate-900 p-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10 border-2 border-slate-800">
-                      <AvatarFallback className="bg-royal-emerald text-white font-bold">{activeUserName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-bold text-white">{activeUserName}</p>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Connected</p>
-                    </div>
+                <div className="bg-slate-900 p-4 flex items-center gap-3">
+                  <Avatar className="h-10 w-10 border-2 border-slate-800">
+                    <AvatarFallback className="bg-royal-emerald text-white font-bold">{activeUserName.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-bold text-white">{activeUserName}</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Connected</p>
                   </div>
                 </div>
                 <CardContent className="p-4 space-y-2">
