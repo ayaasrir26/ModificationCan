@@ -305,9 +305,78 @@ const Chat = () => {
                   </div>
                 ) : (
                   posts?.map((post) => (
-                    <Card key={post.id} className="border border-slate-200 shadow-sm rounded-xl overflow-hidden bg-white hover:border-royal-emerald/30 transition-all duration-300">
-                      {/* Post content */}
-                      {/* ... reactions, comments, editing same as before with English text ... */}
+                     <Card key={post.id} className="border border-slate-200 shadow-sm rounded-xl overflow-hidden bg-white hover:border-royal-emerald/30 transition-all duration-300">
+                      <div className="p-5">
+                        {/* Post Header */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <Avatar className="h-9 w-9 border border-slate-100 shrink-0">
+                              <AvatarFallback className="bg-slate-50 text-slate-600 font-bold text-xs uppercase">
+                                {post.user_name.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold text-slate-900 text-sm">{post.user_name}</span>
+                                <span className="text-[10px] text-slate-400 font-bold flex items-center gap-1 uppercase tracking-wider">
+                                  <Calendar className="w-3 h-3" />
+                                  {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: enUS })}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {(user?.id === post.user_id || !post.user_id) && (
+                            <div className="flex gap-1">
+                              <Button variant="ghost" size="icon" onClick={() => handleEdit(post)} className="h-8 w-8 rounded-md hover:bg-slate-100 text-slate-400">
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </Button>
+                              <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(post.id)} className="h-8 w-8 rounded-md hover:bg-red-50 text-slate-400 hover:text-red-500">
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Post Body */}
+                        <div className="flex flex-col md:flex-row gap-6">
+                          <div className="flex-1">
+                            <h3 className="text-xl font-bold text-slate-900 mb-2 leading-tight">{post.title}</h3>
+                            <p className="text-slate-600 font-medium text-sm leading-relaxed line-clamp-3 mb-4">{post.content}</p>
+                          </div>
+                          {post.image_url && (
+                            <div className="w-full md:w-32 h-24 shrink-0 rounded-lg overflow-hidden border border-slate-100">
+                              <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Reactions */}
+                        <div className="flex items-center gap-4 pt-4 border-t border-slate-50">
+                          <button
+                            onClick={() => handleReaction(post.id, 'like')}
+                            className={`flex items-center gap-1.5 text-xs font-bold transition-colors
+                              ${localReactions[post.id] === 'like' ? 'text-royal-emerald bg-royal-emerald/10' : 'text-slate-400 hover:text-royal-emerald hover:bg-slate-50'}
+                              rounded-md px-2 py-1`}
+                          >
+                            <Heart className={`w-4 h-4 ${localReactions[post.id] === 'like' ? 'fill-current' : ''}`} />
+                            {post.likes + (localReactions[post.id] === 'like' ? 1 : 0)}
+                          </button>
+
+                          <button
+                            onClick={() => handleReaction(post.id, 'dislike')}
+                            className={`flex items-center gap-1.5 text-xs font-bold transition-colors
+                              ${localReactions[post.id] === 'dislike' ? 'text-red-500 bg-red-500/10' : 'text-slate-400 hover:text-red-500 hover:bg-slate-50'}
+                              rounded-md px-2 py-1`}
+                          >
+                            <ThumbsDown className="w-4 h-4" />
+                            {post.dislikes + (localReactions[post.id] === 'dislike' ? 1 : 0)}
+                          </button>
+
+                          
+                        </div>
+
+                      </div>
                     </Card>
                   ))
                 )}
