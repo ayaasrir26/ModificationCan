@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { TeamStats } from '@/components/TeamState';
 import { GeneralStats } from '@/components/GeneralStats';
 
+
 export default function Groups() {
   const { data: teams, isLoading, error: queryError, refetch } = useQuery({
     queryKey: ['teams'],
@@ -87,5 +88,6 @@ export default function Groups() {
 <GeneralStats/>
       </main>
     </div>
+    
   );
 }

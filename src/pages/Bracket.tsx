@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
+
 import { TournamentBracket } from "@/components/TournamentBracket";
 import { PrizesSection } from "@/components/PrizesSection";
 import { Leaderboard } from "@/components/Leaderboard";

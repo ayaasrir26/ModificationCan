@@ -17,6 +17,8 @@ import Chat from "./pages/Chat";
 import Portfolios from "./pages/Portfolios";
 import NotFound from "./pages/NotFound";
 import AvenirBall from "./components/AvenirBall";
+import { Footer } from "./components/Footer";
+
 
 const queryClient = new QueryClient();
 
@@ -45,6 +47,7 @@ const App = () => (
               <Route path="/portfolios" element={<Portfolios />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <Footer/>
           </BrowserRouter>
         </TooltipProvider>
       </BracketPredictionProvider>

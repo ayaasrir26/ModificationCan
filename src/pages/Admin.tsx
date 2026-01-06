@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
+
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -204,6 +205,7 @@ export default function Admin() {
                     </div>
                 )}
             </main>
+            <Footer />
         </div>
     );
 }
