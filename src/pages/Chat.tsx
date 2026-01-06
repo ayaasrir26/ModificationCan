@@ -220,16 +220,21 @@ const Chat = () => {
                                 1,240 En ligne
                             </div>
                             <Button
-                                onClick={() => setIsFormOpen(!isFormOpen)}
-                                className={`h-11 px-6 rounded-lg font-bold transition-all shadow-sm ${isFormOpen ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-royal-emerald text-white hover:bg-royal-emerald/90'}`}
-                            >
-                                {isFormOpen ? 'Annuler' : (
-                                    <>
-                                        <Plus className="w-4 h-4 mr-2" />
-                                        Nouveau Sujet
-                                    </>
-                                )}
-                            </Button>
+  onClick={() => setIsFormOpen(!isFormOpen)}
+  className={`h-11 px-6 rounded-lg font-bold transition-all
+    ${isFormOpen
+      ? 'bg-red-500 text-white hover:bg-red-600 shadow-md'
+      : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg ring-2 ring-emerald-400'
+    }`}
+>
+  {isFormOpen ? 'Annuler' : (
+    <>
+      <Plus className="w-4 h-4 mr-2" />
+      Nouveau Sujet
+    </>
+  )}
+</Button>
+
                         </div>
                     </div>
 
@@ -282,12 +287,18 @@ const Chat = () => {
                                                     </label>
                                                 </div>
 
-                                                <Button
-                                                    disabled={shareMutation.isPending || !title.trim() || !content.trim()}
-                                                    className="h-10 px-6 bg-royal-emerald hover:bg-royal-emerald/90 text-white rounded-lg font-bold shadow-sm transition-all"
-                                                >
-                                                    {shareMutation.isPending ? "Publishing..." : (editingId ? "Save" : "Publish topic")}
-                                                </Button> 
+                                               <Button
+  disabled={shareMutation.isPending || !title.trim() || !content.trim()}
+  className="h-11 px-8 bg-blue-600 text-white hover:bg-blue-700 
+             rounded-lg font-extrabold shadow-lg 
+             disabled:bg-slate-300 disabled:text-slate-500
+             transition-all"
+>
+  {shareMutation.isPending
+    ? "Publishing..."
+    : (editingId ? "Save Changes" : "Publish Topic")}
+</Button>
+ 
                                             </div>
 
                                             {image && (
@@ -391,22 +402,19 @@ const Chat = () => {
                                                 <div className="flex items-center gap-4 pt-4 border-t border-slate-50">
                                                     <button
                                                         onClick={() => likeMutation.mutate({ id: post.id, type: 'likes' })}
-                                                        className={`flex items-center gap-1.5 text-xs font-bold transition-colors ${post.likes > 0 ? 'text-royal-emerald' : 'text-slate-400 hover:text-royal-emerald'}`}
+                                                        className={`flex items-center gap-1.5 text-xs font-bold transition-colors ${post.likes > 0 ? 'text-royal-emerald bg-royal-emerald/10 rounded-md px-2 py-1' : 'text-slate-400 hover:text-royal-emerald hover:bg-slate-50 rounded-md px-2 py-1'}`}
                                                     >
                                                         <Heart className={`w-4 h-4 ${post.likes > 0 ? 'fill-current' : ''}`} />
                                                         {post.likes}
                                                     </button>
                                                     <button
                                                         onClick={() => likeMutation.mutate({ id: post.id, type: 'dislikes' })}
-                                                        className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors"
+                                                        className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-royal-emerald hover:bg-slate-50 rounded-md px-2 py-1 transition-colors"
                                                     >
                                                         <ThumbsDown className="w-4 h-4" />
                                                         {post.dislikes}
                                                     </button>
-                                                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 ml-2">
-                                                        <MessageSquare className="w-4 h-4" />
-                                                        {post.chat_comments?.length || 0} Comments
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
 
@@ -445,7 +453,7 @@ const Chat = () => {
                                                             }}
                                                         />
                                                         <button
-                                                            className="absolute right-0 top-0 h-full px-3 text-royal-emerald hover:bg-slate-50 transition-colors"
+                                                            className="absolute right-0 top-0 h-full px-3 text-royal-emerald hover:bg-royal-emerald/10 transition-colors rounded-r-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-royal-emerald"
                                                             onClick={(e) => {
                                                                 const input = (e.currentTarget.previousSibling as HTMLInputElement);
                                                                 if (input.value.trim()) {

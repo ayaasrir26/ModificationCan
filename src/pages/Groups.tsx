@@ -6,6 +6,7 @@ import { Loader2, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 import { TeamStats } from '@/components/TeamState';
+import { GeneralStats } from '@/components/GeneralStats';
 
 export default function Groups() {
   const { data: teams, isLoading, error: queryError, refetch } = useQuery({
@@ -82,8 +83,8 @@ export default function Groups() {
         <br/>
         <hr />
         <br/>
-            <h1 className="text-center font-display text-5xl text-white mb-2">Goals/Red Cards/Yellow Cards</h1>
-<TeamStats/>
+            <h1 className="text-center font-display text-5xl text-white mb-2">Tournament Overview</h1>
+<GeneralStats/>
       </main>
     </div>
   );
